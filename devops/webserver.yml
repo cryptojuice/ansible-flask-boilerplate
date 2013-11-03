@@ -1,0 +1,27 @@
+---
+- hosts: webserver
+  user: vagrant
+  sudo: True
+  tasks:
+    - shell: sudo apt-get update
+    - name: update apt-cache
+      action: apt update_cache=yes
+
+    - name: install common packages
+      action: apt pkg=$item state=latest
+      with_items:
+        - build-essential
+        - git-core
+        - vim
+        - python-dev
+        - python-pip
+        - nginx
+
+    - name: update pip using pip
+      action: pip name=pip state=latest
+
+    - name: install flask and other requirements
+      action: pip name=$item state=latest
+      with_items:
+        - flask
+        - pymongo

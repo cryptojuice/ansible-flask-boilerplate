@@ -1,0 +1,25 @@
+- hosts: dbserver
+  user: vagrant
+  sudo: True
+  tasks:
+    - name: install common packages
+      action: apt pkg=$item state=latest
+      with_items:
+        - vim
+        - build-essential
+
+    - shell: sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+
+    - shell: echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
+
+    - name: Make sure mongodb.list is present
+      action: file path=/etc/apt/sources.list.d/mongodb.list state=file
+
+    - name: Update apt-cache
+      action: apt update_cache=yes
+
+    - name: Install MongoDB
+      action: apt pkg=mongodb-10gen force=yes
+
+    - name: Make sure MongoDB is running
+      action: service name=mongodb state=started

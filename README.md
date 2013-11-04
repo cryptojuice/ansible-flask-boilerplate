@@ -1,19 +1,21 @@
-*Bootstrap for Flask development enviornment.
+#Flask development enviornment.
 
-**Includes:
-Web server: Flask, Nginx, Gunicorn, Gevent
-DB server: MongoDB
+####Includes
+**Web server:** Flask, Nginx, Gunicorn, Gevent  
+**DB server:** MongoDB
 
-Usage:
+####Required
+VirtualBox or VMware, Vagrant, and Ansible installed on local machine.
 
-Install VirtualBox, Vagrant, and Ansible on local machine.
+####Usage
 
-From shell run commands
+**1. Add vm's to vagrant**  
 vagrant box add precise32 http://files.vagrantup.com/precise32.box
 vagrant box add precise64 http://files.vagrantup.com/precise64.box
 
-git clone ansible-flask-boostrap into folder
+**2. Create new project dir**   
+git clone ansible-flask-boostrap into new directory.
 
-From shell run command:
-vagrant up web && vagrant up db 
-vagrant provision
+**3. Run shell commands**  
+\:# vagrant up web && vagrant up db   
+\:# vagrant provision

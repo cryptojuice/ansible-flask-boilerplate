@@ -16,6 +16,7 @@
         - python-dev
         - python-pip
         - nginx
+        - libevent-dev
 
     - name: update pip using pip
       action: pip name=pip state=latest
@@ -25,3 +26,27 @@
       with_items:
         - flask
         - pymongo
+        - greenlet
+        - gevent
+        - gunicorn
+        - supervisor
+    
+    - name: remove default nginx site
+      action: file path=/etc/nginx/site-enabled/default state=absent
+
+    - copy: src=configs/nginx.conf dest=/etc/nginx/nginx.conf owner=root
+
+    - name: create supervisord config folder
+      action: file dest=/etc/supervisor state=directory owner=root
+    
+    - name: create supervisord.ini
+      action: template src=configs/supervisord.ini dest=/etc/supervisor/supervisord.ini
+
+    - name: create supervisord config
+      action: template src=configs/supervisord.conf dest=/etc/supervisord.conf
+
+    - name: create supervisord init script
+      action: template src=configs/supervisord.sh dest=/etc/init.d/supervisord mode=0755
+
+    - name: start supervisord service and have it run during system startup
+      action: service name=supervisord state=started enabled=yes
